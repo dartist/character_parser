@@ -160,7 +160,7 @@ ParserState parseChar(character, [ParserState state]){
   return state;
 }
 
-defaultState() => new ParserState();
+ParserState defaultState() => new ParserState();
 
 bool startsWith(String str, String start, [int i=0]) =>
   str.substring(i, start.length + i) == start;

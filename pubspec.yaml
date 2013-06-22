@@ -1,9 +1,8 @@
 name: character_parser
 version: 0.1.0
 author: Demis Bellot<demis.bellot@gmail.com>
-description: A sample command-line application
+description: Parse Dart one character at a time to look for snippets in Templates
 homepage: https://github.com/dartist/character_parser
-documentation: Parse Dart one character at a time to look for snippets in Templates
 dependencies:
   unittest: any
 
