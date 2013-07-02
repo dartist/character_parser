@@ -1,5 +1,5 @@
 name: character_parser
-version: 0.1.0
+version: 0.1.2
 author: Demis Bellot<demis.bellot@gmail.com>
 description: Parse Dart one character at a time to look for snippets in Templates
 homepage: https://github.com/dartist/character_parser

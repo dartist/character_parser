@@ -1,3 +1,5 @@
+library character_parser;
+
 class SyntaxError implements Error {
   String msg;
   SyntaxError(this.msg);
@@ -5,6 +7,7 @@ class SyntaxError implements Error {
 class ParseError implements Error {
   String msg;
   ParseError(this.msg);
+  toString() => msg;
 }
 
 class ParserState {

@@ -10,7 +10,7 @@ Parse Dart one character at a time to look for snippets in Templates.
 Add this to your package's pubspec.yaml file:
 
 	dependencies:
-	  character_parser: 0.1.0
+	  character_parser: 0.1.2
 
 
 ## Usage
