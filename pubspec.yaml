@@ -1,10 +1,10 @@
-name: character_parser
+name: nodeify_character_parser
 version: 0.1.3
 author: Demis Bellot <demis.bellot@gmail.com>
 description: Parse Dart one character at a time to look for snippets in Templates
 homepage: https://github.com/dartist/character_parser
-dependencies:
-  unittest: any
+dev_dependencies:
+  test: any
 
 #dependencies:
 #  unittest: any
