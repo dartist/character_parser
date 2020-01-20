@@ -1,16 +1,15 @@
 library character_parser;
 
-class SyntaxError implements Error {
-  get stackTrace => stackTrace;
+class SyntaxError extends Error {
   String msg;
   SyntaxError(this.msg);
+  String toString() => msg;
 }
 
-class ParseError implements Error {
-  get stackTrace => stackTrace;
+class ParseError extends Error {
   String msg;
   ParseError(this.msg);
-  toString() => msg;
+  String toString() => msg;
 }
 
 class ParserState {
@@ -38,13 +37,17 @@ class SrcPosition {
 }
 
 ParserState parse(src, {ParserState state: null, int start: 0, int end: null}) {
-  if (state == null) state = defaultState();
-  if (end == null) end = src.length;
+  if (state == null) {
+    state = defaultState();
+  }
+  if (end == null) {
+    end = src.length;
+  }
 
   var index = start;
   while (index < end) {
     if (state.roundDepth < 0 || state.curlyDepth < 0 || state.squareDepth < 0) {
-      throw new SyntaxError('Mismatched Bracket: ' + src[index - 1]);
+      throw SyntaxError('Mismatched Bracket: ' + src[index - 1]);
     }
     parseChar(src[index++], state);
   }
@@ -58,14 +61,13 @@ SrcPosition parseMax(src, {int start: 0}) {
       state.curlyDepth >= 0 &&
       state.squareDepth >= 0) {
     if (index >= src.length) {
-      throw new ParseError(
+      throw ParseError(
           'The end of the string was reached with no closing bracket found.');
     }
     parseChar(src[index++], state);
   }
   var end = index - 1;
-  return new SrcPosition(
-      start: start, end: end, src: src.substring(start, end));
+  return SrcPosition(start: start, end: end, src: src.substring(start, end));
 }
 
 SrcPosition parseUntil(src, delimiter,
@@ -81,14 +83,16 @@ SrcPosition parseUntil(src, delimiter,
     parseChar(src[index++], state);
   }
   var end = index;
-  return new SrcPosition(
-      start: start, end: end, src: src.substring(start, end));
+  return SrcPosition(start: start, end: end, src: src.substring(start, end));
 }
 
 ParserState parseChar(character, [ParserState state]) {
-  if (character.length != 1)
-    throw new ParseError('Character must be a string of length 1');
-  if (state == null) state = defaultState();
+  if (character.length != 1) {
+    throw ParseError('Character must be a string of length 1');
+  }
+  if (state == null) {
+    state = defaultState();
+  }
 
   String history;
   var wasComment = state.blockComment || state.lineComment;
@@ -133,21 +137,23 @@ ParserState parseChar(character, [ParserState state]) {
     state.blockComment = true;
   } else if (character == '/') {
     //could be start of regexp or divide sign
-    history = state.history.replaceFirst(new RegExp("^\s*"), '');
-    if (history[0] == ')') {
+    history = state.history.replaceFirst(RegExp("^\s*"), '');
+    /*if (history[0] == ')') {
       //unless its an `if`, `while`, `for` or `with` it's a divide
       //this is probably best left though
     } else if (history[0] == '}') {
       //unless it's a function expression, it's a regexp
       //this is probably best left though
-    } else if (isPunctuator(history[0])) {
+    } else */
+    if (isPunctuator(history[0])) {
       state.regexp = true;
-    } else if (new RegExp("/^\w+\b/").hasMatch(history) &&
-        isKeyword(new RegExp("^\w+\b").firstMatch(history).group(0))) {
+    } else if (RegExp("/^\w+\b/").hasMatch(history) &&
+        isKeyword(RegExp("^\w+\b").firstMatch(history).group(0))) {
       state.regexp = true;
-    } else {
-      // assume it's divide
     }
+    /*else {
+      // assume it's divide
+    }*/
   } else if (character == '\'') {
     state.singleQuote = true;
   } else if (character == '"') {
@@ -165,12 +171,13 @@ ParserState parseChar(character, [ParserState state]) {
   } else if (character == ']') {
     state.squareDepth--;
   }
-  if (!state.blockComment && !state.lineComment && !wasComment)
+  if (!state.blockComment && !state.lineComment && !wasComment) {
     state.history = character + state.history;
-  return state;
+    return state;
+  }
 }
 
-ParserState defaultState() => new ParserState();
+ParserState defaultState() => ParserState();
 
 bool startsWith(String str, String start, [int i = 0]) =>
     str.substring(i, start.length + i) == start;
